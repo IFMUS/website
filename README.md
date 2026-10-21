@@ -27,6 +27,8 @@ Requires Python 3 (standard library only).
 python3 site/src/build.py
 ```
 
+See `CLAUDE.md` for how the build, design tokens and content are organised.
+
 This regenerates `site/*.html` and `site/styles.css` from `site/src/`. Edit the
 sources, rebuild, and commit both the sources and the generated files.
 
