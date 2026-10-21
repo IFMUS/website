@@ -1,7 +1,7 @@
 """Builds the IFMUS static mockup.
 
 Outputs:
-  ../<page>.html + ../styles.css   multi-page static site (open index.html)
+  ../dist/<page>.html + ../dist/styles.css   multi-page static site (open dist/index.html)
   argv[1] (optional)               single-file preview with hash navigation
 """
 import pathlib
@@ -9,14 +9,14 @@ import re
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
-OUT = HERE.parent
+OUT = HERE.parent / "dist"
 CSS = (HERE / "styles.css").read_text()
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap">')
 
-LOGO_SRC = (HERE.parent / "brand" / "ifmus-logo.svg").read_text()
+LOGO_SRC = (HERE / "brand" / "ifmus-logo.svg").read_text()
 _logo_n = [0]
 
 
@@ -441,6 +441,7 @@ def links(html, mode):
 
 
 def build_multi():
+    OUT.mkdir(exist_ok=True)
     for key in ORDER:
         title, active, body = PAGES[key]
         full_title = "IFMUS" if key == "home" else f"{title} · IFMUS"

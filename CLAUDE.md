@@ -17,25 +17,26 @@ Tagline: "Advancing POCUS · Empowering clinicians · Improving care"
 
 Plain HTML/CSS, no framework, no dependencies beyond Python 3's standard library.
 
-- `site/src/build.py` holds **all page content** and the shared header, footer and
+- `src/build.py` holds **all page content** and the shared header, footer and
   script. Each page is an entry in `PAGES[key] = (title, active_nav_key, html_body)`.
   Page order is `ORDER`; top navigation is `NAV`.
-- `site/src/styles.css` is the **only** stylesheet source.
-- Run `python3 site/src/build.py` to regenerate `site/*.html` and `site/styles.css`.
-- **Never edit `site/*.html` or `site/styles.css` directly**: they are overwritten on
-  every build. Edit `site/src/`, rebuild, and commit sources and output together.
+- `src/styles.css` is the **only** stylesheet source.
+- Run `python3 src/build.py` to generate the site into `dist/` (`*.html` and
+  `styles.css`).
+- `dist/` is generated output and is **gitignored: never commit it**, and never
+  edit files in it by hand. Change `src/`, rebuild, and commit only `src/`.
 - Internal links in page bodies use `href="@page"` (for example `href="@membership"`,
   `href="@home"`). The build rewrites them to `page.html` (multi-page site) or
   `#page` (single-file preview). Don't hard-code `.html` links.
-- `python3 site/src/build.py preview.html` also writes a single-file preview
+- `python3 src/build.py preview.html` also writes a single-file preview
   (all pages in one HTML file with hash navigation). `preview.html` is gitignored.
-- The logo is inlined from `site/brand/ifmus-logo.svg` by `logo()`, which recolours
+- The logo is inlined from `src/brand/ifmus-logo.svg` by `logo()`, which recolours
   it to `currentColor` / `--logo-halo` so it follows the theme. If you replace the
   logo SVG, keep the blue fills `#0a5ca8` (or `#285ba3`) and white halo fills so
   that recolouring still works.
 
-To check a change, rebuild and open `site/index.html` in a browser (or serve the
-folder: `python3 -m http.server -d site`). Check both light and dark mode and a
+To check a change, rebuild and open `dist/index.html` in a browser (or serve the
+folder: `python3 -m http.server -d dist`). Check both light and dark mode and a
 narrow (phone) viewport.
 
 ## Pages
@@ -54,7 +55,7 @@ narrow (phone) viewport.
 ## Design system
 
 All colours, fonts and radii are CSS custom properties on `:root` in
-`site/src/styles.css`, with a dark-mode set under `prefers-color-scheme: dark`
+`src/styles.css`, with a dark-mode set under `prefers-color-scheme: dark`
 and `[data-theme="dark"]`. **Use the tokens, never raw colours**, and when you add
 a token add its dark value in both dark blocks.
 
@@ -99,7 +100,8 @@ sentence-case headings; spell out POCUS on first use per page.
 ## Repository layout
 
 ```
-site/        built site + brand/ logos + src/ (build.py, styles.css)
+src/         build.py, styles.css, brand/ logos (all sources)
 resources/   reference images (original logo SVG, benefits infographic, palette options)
 docs/        content sources (member invitation letter, notes on inputs)
+dist/        generated site (gitignored)
 ```
